@@ -1,24 +1,24 @@
 from src.loader import load_text
 from src.preprocess import preprocess_text
 from src.keywords import extract_keywords
-from src.scorer import compute_keyword_overlap
+from src.scorer import analyze_match
 from src.report import build_report
 
 
 def main():
     resume_path = "sample_data/sample_resume.txt"
-    jd_path = "sample_data/sample_job_description.txt"
+    job_path = "sample_data/sample_job_description.txt"
 
     resume_text = load_text(resume_path)
-    jd_text = load_text(jd_path)
+    job_text = load_text(job_path)
 
-    clean_resume = preprocess_text(resume_text)
-    clean_jd = preprocess_text(jd_text)
+    resume_tokens = preprocess_text(resume_text)
+    job_tokens = preprocess_text(job_text)
 
-    resume_keywords = extract_keywords(clean_resume)
-    jd_keywords = extract_keywords(clean_jd)
+    resume_keywords = extract_keywords(resume_tokens)
+    job_keywords = extract_keywords(job_tokens)
 
-    results = compute_keyword_overlap(resume_keywords, jd_keywords)
+    results = analyze_match(resume_keywords, job_keywords)
     report = build_report(results)
 
     print(report)
