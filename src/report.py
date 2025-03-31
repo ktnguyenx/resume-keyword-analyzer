@@ -12,7 +12,9 @@ def build_report(results: dict) -> str:
         "=" * 50,
         "RESUME ANALYZER REPORT",
         "=" * 50,
-        f"Match Score: {score}%",
+        f"Overall Match Score: {score}%",
+        f"Keyword Score: {results['keyword_score']}%",
+        f"Phrase Score: {results['phrase_score']}%",
         f"Verdict: {verdict}",
         "",
         f"Matched Keywords ({len(results['matched_keywords'])}):",
@@ -21,20 +23,21 @@ def build_report(results: dict) -> str:
         f"Missing Keywords ({len(results['missing_keywords'])}):",
         ", ".join(results["missing_keywords"]) or "None",
         "",
-        f"Extra Resume Keywords ({len(results['extra_keywords'])}):",
-        ", ".join(results["extra_keywords"]) or "None",
+        f"Matched Phrases ({len(results['matched_phrases'])}):",
+        ", ".join(results["matched_phrases"]) or "None",
+        "",
+        f"Missing Phrases ({len(results['missing_phrases'])}):",
+        ", ".join(results["missing_phrases"]) or "None",
         "",
         "Suggestions:",
     ]
 
+    if results["missing_phrases"]:
+        lines.append("- Add experience bullets that reflect the missing high-value phrases where truthful.")
     if results["missing_keywords"]:
-        lines.append(
-            "- Consider adding the most relevant missing skills if you genuinely have them."
-        )
-    else:
-        lines.append("- Your resume already covers the main detected keywords.")
+        lines.append("- Strengthen the resume around the most relevant missing technical terms.")
+    if not results["missing_keywords"] and not results["missing_phrases"]:
+        lines.append("- Your resume appears well aligned with the detected requirements.")
 
-    lines.append("- Tailor bullet points so matching skills appear in context, not as keyword stuffing.")
-    lines.append("- Prioritize technical skills and tools that appear repeatedly in the job description.")
-
+    lines.append("- Keep matching skills inside accomplishment-focused bullet points.")
     return "\n".join(lines)

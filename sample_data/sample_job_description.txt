@@ -1,1 +1,1 @@
-We are seeking a candidate with experience in Python, SQL, Git, data analysis, APIs, teamwork, and communication. Familiarity with machine learning or NLP is a plus.
+We are seeking a candidate with experience in Python, SQL, Git, data analysis, version control, teamwork, communication, and natural language processing. Familiarity with machine learning is a plus.
