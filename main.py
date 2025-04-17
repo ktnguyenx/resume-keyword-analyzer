@@ -1,10 +1,11 @@
+import sys
+
 from src.loader import load_text
 from src.preprocess import preprocess_text
-from src.keywords import extract_keywords
-from src.phrases import extract_phrases
+from src.keywords import extract_keywords, extract_keyword_counts
+from src.phrases import extract_phrases, extract_phrase_counts
 from src.scorer import analyze_match
 from src.report import build_report
-import sys
 
 
 def main():
@@ -27,11 +28,16 @@ def main():
     resume_phrases = extract_phrases(resume_tokens)
     job_phrases = extract_phrases(job_tokens)
 
+    job_keyword_counts = extract_keyword_counts(job_tokens)
+    job_phrase_counts = extract_phrase_counts(job_tokens)
+
     results = analyze_match(
         resume_keywords,
         job_keywords,
         resume_phrases,
         job_phrases,
+        job_keyword_counts,
+        job_phrase_counts,
     )
 
     report = build_report(results)

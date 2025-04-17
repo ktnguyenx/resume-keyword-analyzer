@@ -12,8 +12,11 @@ SKILL_VOCAB = {
 
 def extract_keywords(tokens: list[str], top_n: int = 25) -> set[str]:
     counts = Counter(tokens)
-
     frequent_words = {word for word, _ in counts.most_common(top_n)}
     skill_words = {word for word in tokens if word in SKILL_VOCAB}
-
     return frequent_words.union(skill_words)
+
+
+def extract_keyword_counts(tokens: list[str]) -> dict[str, int]:
+    counts = Counter(tokens)
+    return dict(counts)
