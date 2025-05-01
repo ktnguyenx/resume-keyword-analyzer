@@ -13,8 +13,8 @@ COMMON_SKILL_PHRASES = {
     "team collaboration",
     "unit testing",
     "data visualization",
-    "object oriented",
     "computer science",
+    "application programming interface",
 }
 
 

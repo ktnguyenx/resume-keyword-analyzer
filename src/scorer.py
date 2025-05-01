@@ -47,30 +47,24 @@ def analyze_match(
     ranked_missing_keywords = sorted(
         missing_keywords,
         key=lambda kw: keyword_weights.get(kw, 0),
-        reverse=True
+        reverse=True,
     )
 
     ranked_missing_phrases = sorted(
         missing_phrases,
         key=lambda ph: phrase_weights.get(ph, 0),
-        reverse=True
+        reverse=True,
     )
 
     return {
-        "resume_keywords": sorted(resume_keywords),
-        "job_keywords": sorted(job_keywords),
         "matched_keywords": sorted(matched_keywords),
         "missing_keywords": sorted(missing_keywords),
         "extra_keywords": sorted(extra_keywords),
-        "resume_phrases": sorted(resume_phrases),
-        "job_phrases": sorted(job_phrases),
         "matched_phrases": sorted(matched_phrases),
         "missing_phrases": sorted(missing_phrases),
         "keyword_score": round(keyword_score, 2),
         "phrase_score": round(phrase_score, 2),
         "match_score": total_score,
-        "keyword_weights": keyword_weights,
-        "phrase_weights": phrase_weights,
         "ranked_missing_keywords": ranked_missing_keywords,
         "ranked_missing_phrases": ranked_missing_phrases,
     }

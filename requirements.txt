@@ -3,3 +3,5 @@ nltk
 spacy
 scikit-learn
 pytest
+pypdf
+python-docx

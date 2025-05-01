@@ -2,7 +2,7 @@ TECHNICAL_KEYWORDS = {
     "python", "java", "javascript", "typescript", "sql", "html", "css",
     "react", "node", "git", "github", "pandas", "numpy", "scikit-learn",
     "nlp", "api", "apis", "docker", "linux", "aws", "flask", "django",
-    "testing", "debugging", "excel", "analytics"
+    "testing", "debugging", "excel", "analytics", "automation"
 }
 
 SOFT_KEYWORDS = {

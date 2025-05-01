@@ -36,13 +36,11 @@ def build_report(results: dict) -> str:
     ]
 
     if top_missing_phrases:
-        lines.append("- Strengthen resume bullets around the highest-value missing phrases where accurate.")
+        lines.append("- Add bullets that reflect the highest-value missing phrases where truthful.")
     if top_missing_keywords:
-        lines.append("- Add or clarify the most important missing technical terms if you genuinely have that experience.")
+        lines.append("- Clarify the most important missing technical terms if you genuinely have that experience.")
     if not top_missing_keywords and not top_missing_phrases:
         lines.append("- Your resume appears strongly aligned with the analyzed job description.")
 
-    lines.append("- Emphasize tools, methods, and technologies in accomplishment-based bullet points.")
-    lines.append("- Repeated job-description terms are weighted more heavily in this version.")
-
+    lines.append("- Keep skills inside accomplishment-focused bullet points, not keyword stuffing.")
     return "\n".join(lines)

@@ -1,0 +1,75 @@
+{
+  "matched_keywords": [
+    "communication",
+    "data",
+    "experience",
+    "git",
+    "python",
+    "teamwork"
+  ],
+  "missing_keywords": [
+    "analysis",
+    "candidate",
+    "control",
+    "familiarity",
+    "language",
+    "learning",
+    "machine",
+    "natural",
+    "plus.",
+    "processing.",
+    "seeking",
+    "sql",
+    "version",
+    "we"
+  ],
+  "extra_keywords": [
+    "analysis.",
+    "api",
+    "automation.",
+    "built",
+    "computer",
+    "debugging",
+    "development",
+    "pandas",
+    "problem",
+    "processing",
+    "science",
+    "skills.",
+    "solving",
+    "strong",
+    "student",
+    "text",
+    "tools"
+  ],
+  "matched_phrases": [],
+  "missing_phrases": [
+    "data analysis",
+    "machine learning",
+    "version control"
+  ],
+  "keyword_score": 30.95,
+  "phrase_score": 0.0,
+  "match_score": 20.12,
+  "ranked_missing_keywords": [
+    "sql",
+    "analysis",
+    "candidate",
+    "machine",
+    "plus.",
+    "version",
+    "natural",
+    "control",
+    "learning",
+    "language",
+    "seeking",
+    "processing.",
+    "we",
+    "familiarity"
+  ],
+  "ranked_missing_phrases": [
+    "machine learning",
+    "data analysis",
+    "version control"
+  ]
+}
