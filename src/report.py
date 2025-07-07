@@ -20,13 +20,13 @@ def build_report(results: dict) -> str:
         f"Phrase Score: {results['phrase_score']}%",
         f"Verdict: {verdict}",
         "",
-        f"Matched Keywords ({len(results['matched_keywords'])}):",
+        f"Matched Standalone Keywords ({len(results['matched_keywords'])}):",
         ", ".join(results["matched_keywords"]) or "None",
         "",
         f"Matched Phrases ({len(results['matched_phrases'])}):",
         ", ".join(results["matched_phrases"]) or "None",
         "",
-        "Top Missing Keywords:",
+        "Top Missing Standalone Keywords:",
         ", ".join(top_missing_keywords) or "None",
         "",
         "Top Missing Phrases:",
@@ -38,7 +38,7 @@ def build_report(results: dict) -> str:
     if top_missing_phrases:
         lines.append("- Add bullets that reflect the highest-value missing phrases where truthful.")
     if top_missing_keywords:
-        lines.append("- Clarify the most important missing technical terms if you genuinely have that experience.")
+        lines.append("- Clarify the most important missing standalone technical terms if you genuinely have that experience.")
     if not top_missing_keywords and not top_missing_phrases:
         lines.append("- Your resume appears strongly aligned with the analyzed job description.")
 

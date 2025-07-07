@@ -5,3 +5,4 @@ scikit-learn
 pytest
 pypdf
 python-docx
+streamlit
