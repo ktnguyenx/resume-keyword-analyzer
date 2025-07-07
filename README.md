@@ -42,18 +42,24 @@ The analyzer returns:
 
 ```bash
 python3 -m pip install -r requirements.txt
+```
 
 ## Usage
 
 ### Run the CLI
+```bash
 python3 main.py sample_data/sample_resume.txt sample_data/sample_job_description.txt
+```
 
 ### Run the CLI with JSON export
+```bash
 python3 main.py sample_data/sample_resume.txt sample_data/sample_job_description.txt --json output/results.json
+```
 
 ### Run the Streamlit app
+```bash
 streamlit run app.py
-
+```
 ## Supported File Types 
 
 - .txt
