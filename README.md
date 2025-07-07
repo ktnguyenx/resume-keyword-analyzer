@@ -1,44 +1,76 @@
 # Resume Keyword Analyzer
 
-A Python project for analyzing how well a resume aligns with a job description using keyword overlap, basic NLP preprocessing, and similarity scoring.
-
-## Goals
-- Extract keywords from resumes and job descriptions
-- Compare overlap between the two
-- Compute a simple alignment score
-- Generate a readable report highlighting matched and missing terms
+A Python application that analyzes how well a resume aligns with a job description using standalone keyword matching, multi-word phrase detection, weighted scoring, and interactive reporting.
 
 ## Features
-- Text cleaning and normalization
-- Stopword removal and lemmatization
-- Keyword extraction
-- Resume-to-job-description similarity scoring
-- CSV/JSON export of analysis results
-- Optional UI or web interface in a later version
+
+- Compare a resume against a job description
+- Extract standalone keywords and multi-word skill phrases
+- Compute alignment scores based on matched and missing terms
+- Support `.txt`, `.pdf`, and `.docx` inputs
+- Run analysis from the command line
+- Launch a Streamlit web app for file upload and interactive results
+- Export analysis results to JSON
 
 ## Tech Stack
+
 - Python
-- Pandas
-- spaCy / NLTK
-- scikit-learn
+- Streamlit
+- PyPDF
+- python-docx
 - Git
 
 ## Project Status
+
 In active development.
 
-## Example Use Case
+## How It Works
+
 Given:
-- a resume text file
-- a job description text file
+- a resume file
+- a job description file
 
-The program returns:
-- matched keywords
-- missing keywords
-- keyword overlap percentage
-- a simple similarity score
+The analyzer returns:
+- matched standalone keywords
+- matched skill phrases
+- missing standalone keywords
+- missing skill phrases
+- weighted match scores
+- optional JSON output
 
-## Next Steps
-- Improve keyword weighting
-- Handle multi-word skills like "machine learning" and "data analysis"
-- Add better scoring logic
-- Support PDF/DOCX input
+## Installation
+
+```bash
+python3 -m pip install -r requirements.txt
+
+## Usage
+
+### Run the CLI
+python3 main.py sample_data/sample_resume.txt sample_data/sample_job_description.txt
+
+### Run the CLI with JSON export
+python3 main.py sample_data/sample_resume.txt sample_data/sample_job_description.txt --json output/results.json
+
+### Run the Streamlit app
+streamlit run app.py
+
+## Supported File Types 
+
+- .txt
+- .pdf
+- .docx
+
+## Example Use Case
+
+This project can help users:
+
+- Compare a resume against a target role
+- Identify missing technical skills or phrases
+- Improve resume targeting for specific job descriptions
+
+## Future Improvements
+- Improve concept and alias matching (for example, relating Git to version control) 
+- Make phrase and keyword extraction more robust 
+- Improve scoring quality for real-world job descriptions 
+- Add better handling for noisy PDF formatting 
+- Expand test coverage Explore deployment options for a public demo
