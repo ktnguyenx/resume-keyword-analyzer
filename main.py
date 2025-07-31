@@ -1,6 +1,6 @@
+from src.analyzer import run_analysis
 from src.cli import parse_args
 from src.export import export_results_to_json
-from src.analyzer import run_analysis
 from src.report import build_report
 
 

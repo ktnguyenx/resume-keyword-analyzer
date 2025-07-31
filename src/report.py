@@ -8,39 +8,26 @@ def build_report(results: dict) -> str:
     else:
         verdict = "Weak match"
 
-    top_missing_keywords = results["ranked_missing_keywords"][:5]
-    top_missing_phrases = results["ranked_missing_phrases"][:5]
-
     lines = [
         "=" * 60,
         "RESUME ANALYZER REPORT",
         "=" * 60,
         f"Overall Match Score: {score}%",
-        f"Keyword Score: {results['keyword_score']}%",
-        f"Phrase Score: {results['phrase_score']}%",
         f"Verdict: {verdict}",
         "",
-        f"Matched Standalone Keywords ({len(results['matched_keywords'])}):",
-        ", ".join(results["matched_keywords"]) or "None",
+        f"Matched Concepts ({len(results['matched_terms'])}):",
+        ", ".join(results["matched_terms"]) or "None",
         "",
-        f"Matched Phrases ({len(results['matched_phrases'])}):",
-        ", ".join(results["matched_phrases"]) or "None",
+        f"Missing Concepts ({len(results['missing_terms'])}):",
+        ", ".join(results["missing_terms"]) or "None",
         "",
-        "Top Missing Standalone Keywords:",
-        ", ".join(top_missing_keywords) or "None",
-        "",
-        "Top Missing Phrases:",
-        ", ".join(top_missing_phrases) or "None",
-        "",
-        "Suggestions:",
+        "Explanations:",
     ]
 
-    if top_missing_phrases:
-        lines.append("- Add bullets that reflect the highest-value missing phrases where truthful.")
-    if top_missing_keywords:
-        lines.append("- Clarify the most important missing standalone technical terms if you genuinely have that experience.")
-    if not top_missing_keywords and not top_missing_phrases:
-        lines.append("- Your resume appears strongly aligned with the analyzed job description.")
+    if results.get("explanations"):
+        for explanation in results["explanations"]:
+            lines.append(f"- {explanation}")
+    else:
+        lines.append("- No explanations available.")
 
-    lines.append("- Keep skills inside accomplishment-focused bullet points, not keyword stuffing.")
     return "\n".join(lines)

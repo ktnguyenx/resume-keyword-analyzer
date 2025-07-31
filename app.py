@@ -10,7 +10,7 @@ from src.analyzer import run_analysis
 st.set_page_config(page_title="Resume Keyword Analyzer", layout="wide")
 
 st.title("Resume Keyword Analyzer")
-st.write("Upload a resume and a job description to compare their alignment.")
+st.write("Upload a resume and a job description to compare concept-level alignment.")
 
 resume_file = st.file_uploader(
     "Upload Resume",
@@ -39,33 +39,36 @@ if resume_file and job_file:
 
         results = run_analysis(resume_path, job_path)
 
-        st.subheader("Match Results")
-        col1, col2, col3 = st.columns(3)
+        st.metric("Overall Match Score", f"{results['match_score']}%")
 
-        with col1:
-            st.metric("Overall Match Score", f"{results['match_score']}%")
-        with col2:
-            st.metric("Keyword Score", f"{results['keyword_score']}%")
-        with col3:
-            st.metric("Phrase Score", f"{results['phrase_score']}%")
+        tab1, tab2, tab3, tab4 = st.tabs(
+            ["Summary", "Matched Concepts", "Missing Concepts", "Debug"]
+        )
 
-        left, right = st.columns(2)
+        with tab1:
+            st.subheader("Summary")
+            for explanation in results.get("explanations", []):
+                st.write(f"- {explanation}")
 
-        with left:
-            st.markdown("### Matched Standalone Keywords")
-            st.write(results["matched_keywords"] or ["None"])
+        with tab2:
+            st.subheader("Matched Concepts")
+            st.write(results["matched_terms"] or ["None"])
 
-            st.markdown("### Matched Phrases")
-            st.write(results["matched_phrases"] or ["None"])
+        with tab3:
+            st.subheader("Missing Concepts")
+            st.write(results["missing_terms"] or ["None"])
 
-        with right:
-            st.markdown("### Missing Standalone Keywords")
-            st.write(results["ranked_missing_keywords"][:5] or ["None"])
+        with tab4:
+            st.subheader("Alias Normalization")
+            st.write("Resume alias mappings:", results["matched_aliases"]["resume"])
+            st.write("Job alias mappings:", results["matched_aliases"]["job"])
 
-            st.markdown("### Missing Phrases")
-            st.write(results["ranked_missing_phrases"][:5] or ["None"])
+            st.subheader("Extracted Raw Terms")
+            st.write("Resume Keywords:", results.get("resume_keywords", []))
+            st.write("Job Keywords:", results.get("job_keywords", []))
+            st.write("Resume Phrases:", results.get("resume_phrases", []))
+            st.write("Job Phrases:", results.get("job_phrases", []))
 
-        st.markdown("### Full Analysis JSON")
         json_str = json.dumps(results, indent=2)
         st.download_button(
             label="Download JSON Results",
@@ -73,12 +76,6 @@ if resume_file and job_file:
             file_name="analysis_results.json",
             mime="application/json",
         )
-
-        with st.expander("Show extracted terms"):
-            st.write("Resume Keywords:", results.get("resume_keywords", []))
-            st.write("Job Keywords:", results.get("job_keywords", []))
-            st.write("Resume Phrases:", results.get("resume_phrases", []))
-            st.write("Job Phrases:", results.get("job_phrases", []))
 
     except Exception as error:
         st.error(f"Error: {error}")

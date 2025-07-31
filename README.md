@@ -1,16 +1,15 @@
 # Resume Keyword Analyzer
 
-A Python application that analyzes how well a resume aligns with a job description using standalone keyword matching, multi-word phrase detection, weighted scoring, and interactive reporting.
+A Python and Streamlit application that analyzes resume-to-job-description alignment using keyword extraction, phrase detection, concept normalization, and interactive reporting.
 
 ## Features
 
-- Compare a resume against a job description
-- Extract standalone keywords and multi-word skill phrases
-- Compute alignment scores based on matched and missing terms
+- Normalize related terms into shared concepts (for example, `Git` and `version control`)
+- Compare resumes and job descriptions at the concept level
 - Support `.txt`, `.pdf`, and `.docx` inputs
-- Run analysis from the command line
-- Launch a Streamlit web app for file upload and interactive results
+- Run analysis from the command line or through a Streamlit web app
 - Export analysis results to JSON
+- Provide human-readable explanations for match results
 
 ## Tech Stack
 
@@ -75,8 +74,9 @@ This project can help users:
 - Improve resume targeting for specific job descriptions
 
 ## Future Improvements
-- Improve concept and alias matching (for example, relating Git to version control) 
-- Make phrase and keyword extraction more robust 
-- Improve scoring quality for real-world job descriptions 
-- Add better handling for noisy PDF formatting 
-- Expand test coverage Explore deployment options for a public demo
+
+- Expand the current rule-based alias mappings to cover a broader range of equivalent concepts.
+- Improve section-aware weighting so skills found in Experience or Projects can count differently from those listed only in Skills.
+- Refine scoring with stronger NLP methods and more robust concept matching.
+- Improve parsing reliability for real-world PDF and DOCX inputs.
+- Expand test coverage and prepare the app for public deployment.
