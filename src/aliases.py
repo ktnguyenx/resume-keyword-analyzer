@@ -15,6 +15,13 @@ ALIAS_MAP = {
     "rest api": "application programming interface",
     "application programming interface": "application programming interface",
 
+    "oop": "object oriented programming",
+    "object oriented programming": "object oriented programming",
+
+    "ci/cd": "continuous integration",
+    "ci cd": "continuous integration",
+    "continuous integration": "continuous integration",
+
     "js": "javascript",
     "py": "python",
 
@@ -31,10 +38,5 @@ def normalize_terms(terms: set[str]) -> set[str]:
     return {normalize_term(term) for term in terms}
 
 
-def build_alias_matches(original_terms: set[str]) -> dict[str, str]:
-    matches = {}
-    for term in original_terms:
-        normalized = normalize_term(term)
-        if normalized != term:
-            matches[term] = normalized
-    return matches
+def build_term_to_concept_map(terms: set[str]) -> dict[str, str]:
+    return {term: normalize_term(term) for term in terms}

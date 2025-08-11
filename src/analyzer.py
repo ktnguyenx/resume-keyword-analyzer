@@ -1,4 +1,4 @@
-from src.aliases import build_alias_matches, normalize_terms
+from src.aliases import build_term_to_concept_map
 from src.explain import build_explanations
 from src.keywords import extract_keywords
 from src.loader import load_text
@@ -27,25 +27,26 @@ def run_analysis(resume_path: str, job_path: str) -> dict:
     resume_raw_terms = resume_keywords | resume_phrases
     job_raw_terms = job_keywords | job_phrases
 
-    matched_aliases = {
-        "resume": build_alias_matches(resume_raw_terms),
-        "job": build_alias_matches(job_raw_terms),
-    }
+    resume_term_map = build_term_to_concept_map(resume_raw_terms)
+    job_term_map = build_term_to_concept_map(job_raw_terms)
 
-    resume_terms = normalize_terms(resume_raw_terms)
-    job_terms = normalize_terms(job_raw_terms)
-
-    results = analyze_match(resume_terms, job_terms)
+    results = analyze_match(
+        resume_raw_terms,
+        job_raw_terms,
+        resume_term_map,
+        job_term_map,
+    )
 
     results["resume_keywords"] = sorted(resume_keywords)
     results["job_keywords"] = sorted(job_keywords)
     results["resume_phrases"] = sorted(resume_phrases)
     results["job_phrases"] = sorted(job_phrases)
-    results["resume_terms"] = sorted(resume_terms)
-    results["job_terms"] = sorted(job_terms)
+    results["resume_raw_terms"] = sorted(resume_raw_terms)
+    results["job_raw_terms"] = sorted(job_raw_terms)
+    results["resume_term_map"] = resume_term_map
+    results["job_term_map"] = job_term_map
     results["resume_sections"] = resume_sections
     results["job_sections"] = job_sections
-    results["matched_aliases"] = matched_aliases
     results["explanations"] = build_explanations(results)
 
     return results

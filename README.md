@@ -5,7 +5,7 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 ## Features
 
 - Normalize related terms into shared concepts (for example, `Git` and `version control`)
-- Compare resumes and job descriptions at the concept level
+- Distinguish between exact matches and alias-inferred matches
 - Support `.txt`, `.pdf`, and `.docx` inputs
 - Run analysis from the command line or through a Streamlit web app
 - Export analysis results to JSON

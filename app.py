@@ -42,7 +42,7 @@ if resume_file and job_file:
         st.metric("Overall Match Score", f"{results['match_score']}%")
 
         tab1, tab2, tab3, tab4 = st.tabs(
-            ["Summary", "Matched Concepts", "Missing Concepts", "Debug"]
+            ["Summary", "Matches", "Missing", "Debug"]
         )
 
         with tab1:
@@ -52,22 +52,32 @@ if resume_file and job_file:
 
         with tab2:
             st.subheader("Matched Concepts")
-            st.write(results["matched_terms"] or ["None"])
+            st.write(results["matched_concepts"] or ["None"])
+
+            st.subheader("Exact Matches")
+            st.write(results["exact_matches"] or ["None"])
+
+            st.subheader("Alias-Inferred Matches")
+            if results["alias_inferred_matches"]:
+                for item in results["alias_inferred_matches"]:
+                    st.write(
+                        f"- Job term **{item['job_term']}** matched concept **{item['concept']}** via resume term(s): {', '.join(item['matched_by'])}"
+                    )
+            else:
+                st.write("None")
 
         with tab3:
             st.subheader("Missing Concepts")
-            st.write(results["missing_terms"] or ["None"])
+            st.write(results["missing_concepts"] or ["None"])
 
         with tab4:
-            st.subheader("Alias Normalization")
-            st.write("Resume alias mappings:", results["matched_aliases"]["resume"])
-            st.write("Job alias mappings:", results["matched_aliases"]["job"])
+            st.subheader("Term Normalization")
+            st.write("Resume term map:", results["resume_term_map"])
+            st.write("Job term map:", results["job_term_map"])
 
             st.subheader("Extracted Raw Terms")
-            st.write("Resume Keywords:", results.get("resume_keywords", []))
-            st.write("Job Keywords:", results.get("job_keywords", []))
-            st.write("Resume Phrases:", results.get("resume_phrases", []))
-            st.write("Job Phrases:", results.get("job_phrases", []))
+            st.write("Resume raw terms:", results["resume_raw_terms"])
+            st.write("Job raw terms:", results["job_raw_terms"])
 
         json_str = json.dumps(results, indent=2)
         st.download_button(

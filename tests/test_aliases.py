@@ -1,11 +1,10 @@
-from src.aliases import normalize_terms
+from src.aliases import build_term_to_concept_map
 
 
-def test_normalize_terms_maps_git_to_version_control():
+def test_build_term_to_concept_map_maps_git_to_version_control():
     terms = {"git", "python", "machine learning"}
-    normalized = normalize_terms(terms)
+    term_map = build_term_to_concept_map(terms)
 
-    assert "version control" in normalized
-    assert "git" not in normalized
-    assert "python" in normalized
-    assert "machine learning" in normalized
+    assert term_map["git"] == "version control"
+    assert term_map["python"] == "python"
+    assert term_map["machine learning"] == "machine learning"

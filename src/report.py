@@ -15,14 +15,28 @@ def build_report(results: dict) -> str:
         f"Overall Match Score: {score}%",
         f"Verdict: {verdict}",
         "",
-        f"Matched Concepts ({len(results['matched_terms'])}):",
-        ", ".join(results["matched_terms"]) or "None",
+        f"Matched Concepts ({len(results['matched_concepts'])}):",
+        ", ".join(results["matched_concepts"]) or "None",
         "",
-        f"Missing Concepts ({len(results['missing_terms'])}):",
-        ", ".join(results["missing_terms"]) or "None",
+        f"Exact Matches ({len(results['exact_matches'])}):",
+        ", ".join(results["exact_matches"]) or "None",
         "",
-        "Explanations:",
+        f"Missing Concepts ({len(results['missing_concepts'])}):",
+        ", ".join(results["missing_concepts"]) or "None",
+        "",
+        "Alias-Inferred Matches:",
     ]
+
+    if results["alias_inferred_matches"]:
+        for item in results["alias_inferred_matches"]:
+            lines.append(
+                f"- {item['job_term']} matched concept '{item['concept']}' via {', '.join(item['matched_by'])}"
+            )
+    else:
+        lines.append("- None")
+
+    lines.append("")
+    lines.append("Explanations:")
 
     if results.get("explanations"):
         for explanation in results["explanations"]:
