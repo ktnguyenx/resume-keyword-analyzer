@@ -3,7 +3,9 @@ SECTION_HEADERS = {
     "technical skills": "skills",
     "experience": "experience",
     "work experience": "experience",
+    "professional experience": "experience",
     "projects": "projects",
+    "project experience": "projects",
     "education": "education",
 }
 
@@ -18,13 +20,21 @@ def split_into_sections(text: str) -> dict[str, str]:
         normalized = line.lower().rstrip(":")
         if normalized in SECTION_HEADERS:
             if buffer:
-                sections[current_section] = "\n".join(buffer).strip()
+                existing = sections.get(current_section, "")
+                new_text = "\n".join(buffer).strip()
+                sections[current_section] = (
+                    f"{existing}\n{new_text}".strip() if existing else new_text
+                )
                 buffer = []
             current_section = SECTION_HEADERS[normalized]
         else:
             buffer.append(line)
 
     if buffer:
-        sections[current_section] = "\n".join(buffer).strip()
+        existing = sections.get(current_section, "")
+        new_text = "\n".join(buffer).strip()
+        sections[current_section] = (
+            f"{existing}\n{new_text}".strip() if existing else new_text
+        )
 
     return sections

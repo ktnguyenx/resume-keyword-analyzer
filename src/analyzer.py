@@ -8,6 +8,27 @@ from src.scorer import analyze_match
 from src.sections import split_into_sections
 
 
+def extract_terms_from_text(text: str) -> tuple[set[str], set[str], set[str], dict[str, str]]:
+    tokens = preprocess_text(text)
+    keywords = extract_keywords(tokens)
+    phrases = extract_phrases(tokens)
+    raw_terms = keywords | phrases
+    term_map = build_term_to_concept_map(raw_terms)
+    concepts = set(term_map.values())
+
+    return keywords, phrases, raw_terms, term_map
+
+
+def build_section_concept_map(sections: dict[str, str]) -> dict[str, set[str]]:
+    section_concepts = {}
+
+    for section_name, section_text in sections.items():
+        _, _, _, term_map = extract_terms_from_text(section_text)
+        section_concepts[section_name] = set(term_map.values())
+
+    return section_concepts
+
+
 def run_analysis(resume_path: str, job_path: str) -> dict:
     resume_text = load_text(resume_path)
     job_text = load_text(job_path)
@@ -15,26 +36,17 @@ def run_analysis(resume_path: str, job_path: str) -> dict:
     resume_sections = split_into_sections(resume_text)
     job_sections = split_into_sections(job_text)
 
-    resume_tokens = preprocess_text(resume_text)
-    job_tokens = preprocess_text(job_text)
+    resume_keywords, resume_phrases, resume_raw_terms, resume_term_map = extract_terms_from_text(resume_text)
+    job_keywords, job_phrases, job_raw_terms, job_term_map = extract_terms_from_text(job_text)
 
-    resume_keywords = extract_keywords(resume_tokens)
-    job_keywords = extract_keywords(job_tokens)
-
-    resume_phrases = extract_phrases(resume_tokens)
-    job_phrases = extract_phrases(job_tokens)
-
-    resume_raw_terms = resume_keywords | resume_phrases
-    job_raw_terms = job_keywords | job_phrases
-
-    resume_term_map = build_term_to_concept_map(resume_raw_terms)
-    job_term_map = build_term_to_concept_map(job_raw_terms)
+    resume_section_concepts = build_section_concept_map(resume_sections)
 
     results = analyze_match(
         resume_raw_terms,
         job_raw_terms,
         resume_term_map,
         job_term_map,
+        resume_section_concepts,
     )
 
     results["resume_keywords"] = sorted(resume_keywords)
@@ -47,6 +59,9 @@ def run_analysis(resume_path: str, job_path: str) -> dict:
     results["job_term_map"] = job_term_map
     results["resume_sections"] = resume_sections
     results["job_sections"] = job_sections
+    results["resume_section_concepts"] = {
+        key: sorted(value) for key, value in resume_section_concepts.items()
+    }
     results["explanations"] = build_explanations(results)
 
     return results

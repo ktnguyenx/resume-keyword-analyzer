@@ -1,8 +1,48 @@
+from src.section_weights import get_section_weight
+
+
+def find_concept_locations(
+    matched_concepts: set[str],
+    resume_section_concepts: dict[str, set[str]],
+) -> dict[str, list[str]]:
+    concept_locations = {}
+
+    for concept in matched_concepts:
+        locations = [
+            section_name
+            for section_name, concepts in resume_section_concepts.items()
+            if concept in concepts
+        ]
+        concept_locations[concept] = sorted(locations)
+
+    return concept_locations
+
+
+def compute_weighted_match_score(
+    job_concepts: set[str],
+    concept_locations: dict[str, list[str]],
+) -> float:
+    if not job_concepts:
+        return 0.0
+
+    total_possible = len(job_concepts)
+    score_sum = 0.0
+
+    for concept in job_concepts:
+        locations = concept_locations.get(concept, [])
+        if locations:
+            best_weight = max(get_section_weight(location) for location in locations)
+            score_sum += best_weight
+
+    return round((score_sum / total_possible) * 100, 2)
+
+
 def analyze_match(
     resume_raw_terms: set[str],
     job_raw_terms: set[str],
     resume_term_map: dict[str, str],
     job_term_map: dict[str, str],
+    resume_section_concepts: dict[str, set[str]],
 ) -> dict:
     resume_concepts = set(resume_term_map.values())
     job_concepts = set(job_term_map.values())
@@ -32,7 +72,12 @@ def analyze_match(
         key=lambda item: (item["concept"], item["job_term"])
     )
 
-    match_score = (len(matched_concepts) / len(job_concepts) * 100) if job_concepts else 0.0
+    concept_locations = find_concept_locations(
+        matched_concepts,
+        resume_section_concepts,
+    )
+
+    match_score = compute_weighted_match_score(job_concepts, concept_locations)
 
     return {
         "exact_matches": exact_matches,
@@ -40,5 +85,6 @@ def analyze_match(
         "matched_concepts": sorted(matched_concepts),
         "missing_concepts": sorted(missing_concepts),
         "extra_concepts": sorted(extra_concepts),
-        "match_score": round(match_score, 2),
+        "concept_locations": concept_locations,
+        "match_score": match_score,
     }

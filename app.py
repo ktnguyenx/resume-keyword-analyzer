@@ -42,7 +42,7 @@ if resume_file and job_file:
         st.metric("Overall Match Score", f"{results['match_score']}%")
 
         tab1, tab2, tab3, tab4 = st.tabs(
-            ["Summary", "Matches", "Missing", "Debug"]
+            ["Summary", "Matched Concepts", "Missing Concepts", "Debug"]
         )
 
         with tab1:
@@ -52,10 +52,12 @@ if resume_file and job_file:
 
         with tab2:
             st.subheader("Matched Concepts")
-            st.write(results["matched_concepts"] or ["None"])
-
-            st.subheader("Exact Matches")
-            st.write(results["exact_matches"] or ["None"])
+            if results["matched_concepts"]:
+                for concept in results["matched_concepts"]:
+                    locations = results["concept_locations"].get(concept, [])
+                    st.write(f"- **{concept}** — found in: {', '.join(locations) if locations else 'unknown'}")
+            else:
+                st.write("None")
 
             st.subheader("Alias-Inferred Matches")
             if results["alias_inferred_matches"]:
@@ -71,13 +73,12 @@ if resume_file and job_file:
             st.write(results["missing_concepts"] or ["None"])
 
         with tab4:
+            st.subheader("Resume Section Concepts")
+            st.write(results["resume_section_concepts"])
+
             st.subheader("Term Normalization")
             st.write("Resume term map:", results["resume_term_map"])
             st.write("Job term map:", results["job_term_map"])
-
-            st.subheader("Extracted Raw Terms")
-            st.write("Resume raw terms:", results["resume_raw_terms"])
-            st.write("Job raw terms:", results["job_raw_terms"])
 
         json_str = json.dumps(results, indent=2)
         st.download_button(

@@ -6,9 +6,9 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 
 - Normalize related terms into shared concepts (for example, `Git` and `version control`)
 - Distinguish between exact matches and alias-inferred matches
+- Detect common resume sections such as Skills, Experience, Projects, and Education
 - Support `.txt`, `.pdf`, and `.docx` inputs
 - Run analysis from the command line or through a Streamlit web app
-- Export analysis results to JSON
 - Provide human-readable explanations for match results
 
 ## Tech Stack

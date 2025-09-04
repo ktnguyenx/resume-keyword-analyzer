@@ -26,4 +26,15 @@ def build_explanations(results: dict) -> list[str]:
             f"Highest-priority missing concept: {results['missing_concepts'][0]}"
         )
 
+    if results.get("concept_locations"):
+        strong_matches = [
+            concept
+            for concept, locations in results["concept_locations"].items()
+            if "experience" in locations or "projects" in locations
+        ]
+        if strong_matches:
+            explanations.append(
+                "Several matched concepts were found in stronger resume sections such as Experience or Projects."
+            )
+
     return explanations

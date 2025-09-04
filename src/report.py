@@ -16,16 +16,23 @@ def build_report(results: dict) -> str:
         f"Verdict: {verdict}",
         "",
         f"Matched Concepts ({len(results['matched_concepts'])}):",
-        ", ".join(results["matched_concepts"]) or "None",
-        "",
-        f"Exact Matches ({len(results['exact_matches'])}):",
-        ", ".join(results["exact_matches"]) or "None",
+    ]
+
+    if results["matched_concepts"]:
+        for concept in results["matched_concepts"]:
+            locations = results["concept_locations"].get(concept, [])
+            location_text = ", ".join(locations) if locations else "unknown location"
+            lines.append(f"- {concept} (found in: {location_text})")
+    else:
+        lines.append("None")
+
+    lines.extend([
         "",
         f"Missing Concepts ({len(results['missing_concepts'])}):",
         ", ".join(results["missing_concepts"]) or "None",
         "",
         "Alias-Inferred Matches:",
-    ]
+    ])
 
     if results["alias_inferred_matches"]:
         for item in results["alias_inferred_matches"]:
