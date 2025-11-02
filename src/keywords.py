@@ -5,7 +5,6 @@ STANDALONE_SKILL_VOCAB = {
     "java",
     "javascript",
     "typescript",
-    "c",
     "c++",
     "sql",
     "html",
@@ -23,51 +22,22 @@ STANDALONE_SKILL_VOCAB = {
     "flask",
     "django",
     "api",
-    "apis",
     "testing",
     "communication",
     "leadership",
     "teamwork",
     "debugging",
     "automation",
-}
-
-PHRASE_FRAGMENT_WORDS = {
-    "data",
-    "analysis",
-    "machine",
-    "learning",
-    "natural",
-    "language",
-    "processing",
-    "version",
-    "control",
-    "project",
-    "management",
-    "software",
-    "engineering",
-    "web",
-    "development",
-    "problem",
-    "solving",
-    "unit",
-    "visualization",
-    "science",
-    "computer",
+    "streamlit",
+    "spacy",
 }
 
 
-def extract_keywords(tokens: list[str], top_n: int = 20) -> set[str]:
+def extract_keywords(tokens: list[str], top_n: int = 30) -> set[str]:
     counts = Counter(tokens)
 
-    keywords = {
-        word
-        for word, _ in counts.most_common(top_n)
-        if word in STANDALONE_SKILL_VOCAB and word not in PHRASE_FRAGMENT_WORDS
+    return {
+        token
+        for token, _ in counts.most_common(top_n)
+        if token in STANDALONE_SKILL_VOCAB
     }
-
-    return keywords
-
-
-def extract_keyword_counts(tokens: list[str]) -> dict[str, int]:
-    return dict(Counter(tokens))

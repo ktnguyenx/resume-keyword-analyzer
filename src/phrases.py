@@ -1,4 +1,4 @@
-from collections import Counter
+from src.preprocess import get_doc
 
 COMMON_SKILL_PHRASES = {
     "machine learning",
@@ -15,28 +15,37 @@ COMMON_SKILL_PHRASES = {
     "data visualization",
     "computer science",
     "application programming interface",
+    "object oriented programming",
+    "continuous integration",
 }
 
 
-def extract_phrases(tokens: list[str], max_n: int = 3) -> set[str]:
+def normalize_phrase(text: str) -> str:
+    doc = get_doc(text)
+    parts = []
+
+    for token in doc:
+        if token.is_space or token.is_punct or token.is_stop:
+            continue
+        lemma = token.lemma_.lower().strip()
+        if lemma and lemma != "-pron-":
+            parts.append(lemma)
+
+    return " ".join(parts)
+
+
+def extract_phrases(text: str) -> set[str]:
+    doc = get_doc(text)
     found = set()
 
-    for n in range(2, max_n + 1):
-        for i in range(len(tokens) - n + 1):
-            phrase = " ".join(tokens[i:i + n])
-            if phrase in COMMON_SKILL_PHRASES:
-                found.add(phrase)
+    for chunk in doc.noun_chunks:
+        normalized = normalize_phrase(chunk.text)
+        if normalized in COMMON_SKILL_PHRASES:
+            found.add(normalized)
+
+    text_normalized = normalize_phrase(text)
+    for phrase in COMMON_SKILL_PHRASES:
+        if phrase in text_normalized:
+            found.add(phrase)
 
     return found
-
-
-def extract_phrase_counts(tokens: list[str], max_n: int = 3) -> dict[str, int]:
-    phrase_counter = Counter()
-
-    for n in range(2, max_n + 1):
-        for i in range(len(tokens) - n + 1):
-            phrase = " ".join(tokens[i:i + n])
-            if phrase in COMMON_SKILL_PHRASES:
-                phrase_counter[phrase] += 1
-
-    return dict(phrase_counter)

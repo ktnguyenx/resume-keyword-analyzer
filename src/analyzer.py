@@ -11,10 +11,9 @@ from src.sections import split_into_sections
 def extract_terms_from_text(text: str) -> tuple[set[str], set[str], set[str], dict[str, str]]:
     tokens = preprocess_text(text)
     keywords = extract_keywords(tokens)
-    phrases = extract_phrases(tokens)
+    phrases = extract_phrases(text)
     raw_terms = keywords | phrases
     term_map = build_term_to_concept_map(raw_terms)
-    concepts = set(term_map.values())
 
     return keywords, phrases, raw_terms, term_map
 

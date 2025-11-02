@@ -1,8 +1,5 @@
-pandas
-nltk
-spacy
-scikit-learn
+streamlit
 pytest
 pypdf
 python-docx
-streamlit
+spacy

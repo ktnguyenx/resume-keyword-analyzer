@@ -22,20 +22,16 @@ ALIAS_MAP = {
     "ci cd": "continuous integration",
     "continuous integration": "continuous integration",
 
-    "js": "javascript",
-    "py": "python",
-
     "data analytics": "data analysis",
     "data analysis": "data analysis",
+
+    "js": "javascript",
+    "py": "python",
 }
 
 
 def normalize_term(term: str) -> str:
     return ALIAS_MAP.get(term, term)
-
-
-def normalize_terms(terms: set[str]) -> set[str]:
-    return {normalize_term(term) for term in terms}
 
 
 def build_term_to_concept_map(terms: set[str]) -> dict[str, str]:

@@ -1,21 +1,39 @@
-import re
+import spacy
 
-STOPWORDS = {
-    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
-    "has", "have", "in", "is", "it", "of", "on", "or", "that", "the",
-    "to", "was", "were", "will", "with", "using", "use", "used",
-    "your", "our", "their", "this", "these", "those", "we",
-    "you", "they", "i", "he", "she", "them", "his", "her",
-    "candidate", "candidates", "seeking", "seek", "looking",
-    "familiarity", "familiar", "plus", "experience", "experienced"
-}
+_NLP = None
+
+
+def get_nlp():
+    global _NLP
+    if _NLP is None:
+        _NLP = spacy.load("en_core_web_sm")
+    return _NLP
 
 
 def preprocess_text(text: str) -> list[str]:
-    text = text.lower()
-    text = re.sub(r"[^a-z0-9\s+#/.-]", " ", text)
-    text = re.sub(r"[./-]", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
+    nlp = get_nlp()
+    doc = nlp(text)
 
-    tokens = text.split()
-    return [token for token in tokens if token not in STOPWORDS and len(token) > 1]
+    tokens = []
+    for token in doc:
+        if token.is_space or token.is_punct:
+            continue
+        if token.is_stop:
+            continue
+        if not token.text.strip():
+            continue
+
+        lemma = token.lemma_.lower().strip()
+        if not lemma or len(lemma) <= 1:
+            continue
+        if lemma in {"-pron-"}:
+            continue
+
+        tokens.append(lemma)
+
+    return tokens
+
+
+def get_doc(text: str):
+    nlp = get_nlp()
+    return nlp(text)

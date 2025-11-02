@@ -4,12 +4,11 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 
 ## Features
 
-- Normalize related terms into shared concepts (for example, `Git` and `version control`)
-- Distinguish between exact matches and alias-inferred matches
-- Detect common resume sections such as Skills, Experience, Projects, and Education
-- Support `.txt`, `.pdf`, and `.docx` inputs
-- Run analysis from the command line or through a Streamlit web app
-- Provide human-readable explanations for match results
+- Use spaCy-based preprocessing for tokenization, stopword filtering, and lemmatization
+- Extract multi-word skill phrases with NLP-assisted phrase detection
+- Normalize related terms into shared concepts
+- Weight matched concepts based on where they appear in the resume
+- Run analysis through both a CLI and a Streamlit web app
 
 ## Tech Stack
 
@@ -18,6 +17,7 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 - PyPDF
 - python-docx
 - Git
+- spaCy
 
 ## Project Status
 
@@ -41,7 +41,11 @@ The analyzer returns:
 
 ```bash
 python3 -m pip install -r requirements.txt
+python3 -m spacy download en_core_web_sm
 ```
+
+### Recommended Python Version
+Python 3.11 or 3.12 is recommended for compatibility with the current NLP stack.
 
 ## Usage
 

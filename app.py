@@ -10,7 +10,7 @@ from src.analyzer import run_analysis
 st.set_page_config(page_title="Resume Keyword Analyzer", layout="wide")
 
 st.title("Resume Keyword Analyzer")
-st.write("Upload a resume and a job description to compare concept-level alignment.")
+st.write("Upload a resume and a job description to compare concept-level alignment using NLP-powered extraction.")
 
 resume_file = st.file_uploader(
     "Upload Resume",
