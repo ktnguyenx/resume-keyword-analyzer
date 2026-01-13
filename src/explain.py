@@ -18,23 +18,17 @@ def build_explanations(results: dict) -> list[str]:
 
     if results.get("alias_inferred_matches"):
         explanations.append(
-            "Some matches were inferred through alias normalization rather than exact wording."
+            "Some matches were identified through alias normalization."
         )
 
-    if results.get("missing_concepts"):
+    if results.get("fuzzy_matches"):
         explanations.append(
-            f"Highest-priority missing concept: {results['missing_concepts'][0]}"
+            "Some concept matches were identified through fuzzy similarity rather than exact wording."
         )
 
-    if results.get("concept_locations"):
-        strong_matches = [
-            concept
-            for concept, locations in results["concept_locations"].items()
-            if "experience" in locations or "projects" in locations
-        ]
-        if strong_matches:
-            explanations.append(
-                "Several matched concepts were found in stronger resume sections such as Experience or Projects."
-            )
+    if results.get("ranked_missing_concepts"):
+        explanations.append(
+            f"Top missing concept: {results['ranked_missing_concepts'][0]}"
+        )
 
     return explanations

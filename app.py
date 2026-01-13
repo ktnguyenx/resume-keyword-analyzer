@@ -68,6 +68,15 @@ if resume_file and job_file:
             else:
                 st.write("None")
 
+	    st.subheader("Fuzzy Matches")
+            if results["fuzzy_matches"]:
+    		for item in results["fuzzy_matches"]:
+        	    st.write(
+            		f"- Job concept **{item['job_concept']}** loosely matched resume concept **{item['resume_concept']}** (score: {item['score']})"
+        )
+	    else:
+    		st.write("None")	
+
         with tab3:
             st.subheader("Missing Concepts")
             st.write(results["missing_concepts"] or ["None"])

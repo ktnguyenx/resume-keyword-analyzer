@@ -5,6 +5,7 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 ## Features
 
 - Use spaCy-based preprocessing for tokenization, stopword filtering, and lemmatization
+- Identify exact, alias-based, and fuzzy concept matches to reduce brittle wording dependence
 - Extract multi-word skill phrases with NLP-assisted phrase detection
 - Normalize related terms into shared concepts
 - Weight matched concepts based on where they appear in the resume
@@ -42,6 +43,7 @@ The analyzer returns:
 ```bash
 python3 -m pip install -r requirements.txt
 python3 -m spacy download en_core_web_sm
+python -m pip install rapidfuzz
 ```
 
 ### Recommended Python Version

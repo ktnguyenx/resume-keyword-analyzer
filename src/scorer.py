@@ -1,3 +1,4 @@
+from src.fuzzy_match import find_fuzzy_matches
 from src.section_weights import get_section_weight
 
 
@@ -21,6 +22,7 @@ def find_concept_locations(
 def compute_weighted_match_score(
     job_concepts: set[str],
     concept_locations: dict[str, list[str]],
+    fuzzy_matches: list[dict],
 ) -> float:
     if not job_concepts:
         return 0.0
@@ -28,11 +30,15 @@ def compute_weighted_match_score(
     total_possible = len(job_concepts)
     score_sum = 0.0
 
+    fuzzy_job_concepts = {item["job_concept"] for item in fuzzy_matches}
+
     for concept in job_concepts:
         locations = concept_locations.get(concept, [])
         if locations:
             best_weight = max(get_section_weight(location) for location in locations)
             score_sum += best_weight
+        elif concept in fuzzy_job_concepts:
+            score_sum += 0.5
 
     return round((score_sum / total_possible) * 100, 2)
 
@@ -47,11 +53,16 @@ def analyze_match(
     resume_concepts = set(resume_term_map.values())
     job_concepts = set(job_term_map.values())
 
-    matched_concepts = resume_concepts & job_concepts
-    missing_concepts = job_concepts - resume_concepts
-    extra_concepts = resume_concepts - job_concepts
-
     exact_matches = sorted(resume_raw_terms & job_raw_terms)
+
+    matched_concepts = resume_concepts & job_concepts
+    fuzzy_matches = find_fuzzy_matches(resume_concepts, job_concepts)
+
+    fuzzy_job_concepts = {item["job_concept"] for item in fuzzy_matches}
+    all_matched_job_concepts = matched_concepts | fuzzy_job_concepts
+
+    missing_concepts = job_concepts - all_matched_job_concepts
+    extra_concepts = resume_concepts - matched_concepts
 
     alias_inferred_matches = []
     for job_term, concept in job_term_map.items():
@@ -77,14 +88,22 @@ def analyze_match(
         resume_section_concepts,
     )
 
-    match_score = compute_weighted_match_score(job_concepts, concept_locations)
+    match_score = compute_weighted_match_score(
+        job_concepts,
+        concept_locations,
+        fuzzy_matches,
+    )
+
+    ranked_missing_concepts = sorted(missing_concepts)
 
     return {
         "exact_matches": exact_matches,
         "alias_inferred_matches": alias_inferred_matches,
-        "matched_concepts": sorted(matched_concepts),
+        "fuzzy_matches": fuzzy_matches,
+        "matched_concepts": sorted(all_matched_job_concepts),
         "missing_concepts": sorted(missing_concepts),
         "extra_concepts": sorted(extra_concepts),
+        "ranked_missing_concepts": ranked_missing_concepts,
         "concept_locations": concept_locations,
         "match_score": match_score,
     }
