@@ -23,6 +23,7 @@ def compute_weighted_match_score(
     job_concepts: set[str],
     concept_locations: dict[str, list[str]],
     fuzzy_matches: list[dict],
+    include_fuzzy_in_score: bool = True,
 ) -> float:
     if not job_concepts:
         return 0.0
@@ -37,7 +38,7 @@ def compute_weighted_match_score(
         if locations:
             best_weight = max(get_section_weight(location) for location in locations)
             score_sum += best_weight
-        elif concept in fuzzy_job_concepts:
+        elif include_fuzzy_in_score and concept in fuzzy_job_concepts:
             score_sum += 0.5
 
     return round((score_sum / total_possible) * 100, 2)
@@ -49,6 +50,8 @@ def analyze_match(
     resume_term_map: dict[str, str],
     job_term_map: dict[str, str],
     resume_section_concepts: dict[str, set[str]],
+    fuzzy_threshold: int = 85,
+    include_fuzzy_in_score: bool = True,
 ) -> dict:
     resume_concepts = set(resume_term_map.values())
     job_concepts = set(job_term_map.values())
@@ -56,7 +59,11 @@ def analyze_match(
     exact_matches = sorted(resume_raw_terms & job_raw_terms)
 
     matched_concepts = resume_concepts & job_concepts
-    fuzzy_matches = find_fuzzy_matches(resume_concepts, job_concepts)
+    fuzzy_matches = find_fuzzy_matches(
+        resume_concepts,
+        job_concepts,
+        threshold=fuzzy_threshold,
+    )
 
     fuzzy_job_concepts = {item["job_concept"] for item in fuzzy_matches}
     all_matched_job_concepts = matched_concepts | fuzzy_job_concepts
@@ -92,9 +99,8 @@ def analyze_match(
         job_concepts,
         concept_locations,
         fuzzy_matches,
+        include_fuzzy_in_score=include_fuzzy_in_score,
     )
-
-    ranked_missing_concepts = sorted(missing_concepts)
 
     return {
         "exact_matches": exact_matches,
@@ -103,7 +109,9 @@ def analyze_match(
         "matched_concepts": sorted(all_matched_job_concepts),
         "missing_concepts": sorted(missing_concepts),
         "extra_concepts": sorted(extra_concepts),
-        "ranked_missing_concepts": ranked_missing_concepts,
+        "ranked_missing_concepts": sorted(missing_concepts),
         "concept_locations": concept_locations,
         "match_score": match_score,
+        "fuzzy_threshold": fuzzy_threshold,
+        "include_fuzzy_in_score": include_fuzzy_in_score,
     }

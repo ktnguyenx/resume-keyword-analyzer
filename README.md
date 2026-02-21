@@ -10,6 +10,7 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 - Normalize related terms into shared concepts
 - Weight matched concepts based on where they appear in the resume
 - Run analysis through both a CLI and a Streamlit web app
+- Download results as JSON, plain text, or CSV
 
 ## Tech Stack
 

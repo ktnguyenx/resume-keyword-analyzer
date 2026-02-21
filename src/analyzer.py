@@ -1,4 +1,5 @@
 from src.aliases import build_term_to_concept_map
+from src.config import DEFAULT_FUZZY_THRESHOLD, DEFAULT_INCLUDE_FUZZY_IN_SCORE
 from src.explain import build_explanations
 from src.keywords import extract_keywords
 from src.loader import load_text
@@ -28,7 +29,12 @@ def build_section_concept_map(sections: dict[str, str]) -> dict[str, set[str]]:
     return section_concepts
 
 
-def run_analysis(resume_path: str, job_path: str) -> dict:
+def run_analysis(
+    resume_path: str,
+    job_path: str,
+    fuzzy_threshold: int = DEFAULT_FUZZY_THRESHOLD,
+    include_fuzzy_in_score: bool = DEFAULT_INCLUDE_FUZZY_IN_SCORE,
+) -> dict:
     resume_text = load_text(resume_path)
     job_text = load_text(job_path)
 
@@ -46,6 +52,8 @@ def run_analysis(resume_path: str, job_path: str) -> dict:
         resume_term_map,
         job_term_map,
         resume_section_concepts,
+        fuzzy_threshold=fuzzy_threshold,
+        include_fuzzy_in_score=include_fuzzy_in_score,
     )
 
     results["resume_keywords"] = sorted(resume_keywords)

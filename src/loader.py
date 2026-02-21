@@ -25,21 +25,30 @@ def load_text(filepath: str) -> str:
 
 
 def _load_txt(path: Path) -> str:
-    return path.read_text(encoding="utf-8")
+    try:
+        return path.read_text(encoding="utf-8")
+    except Exception as error:
+        raise ValueError(f"Could not read text file: {path.name}") from error
 
 
 def _load_pdf(path: Path) -> str:
-    reader = PdfReader(str(path))
-    text_parts = []
+    try:
+        reader = PdfReader(str(path))
+        text_parts = []
 
-    for page in reader.pages:
-        extracted = page.extract_text()
-        if extracted:
-            text_parts.append(extracted)
+        for page in reader.pages:
+            extracted = page.extract_text()
+            if extracted:
+                text_parts.append(extracted)
 
-    return "\n".join(text_parts)
+        return "\n".join(text_parts)
+    except Exception as error:
+        raise ValueError(f"Could not read PDF file: {path.name}") from error
 
 
 def _load_docx(path: Path) -> str:
-    document = Document(str(path))
-    return "\n".join(paragraph.text for paragraph in document.paragraphs)
+    try:
+        document = Document(str(path))
+        return "\n".join(paragraph.text for paragraph in document.paragraphs)
+    except Exception as error:
+        raise ValueError(f"Could not read DOCX file: {path.name}") from error
