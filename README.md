@@ -18,8 +18,10 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 - Streamlit
 - PyPDF
 - python-docx
-- Git
 - spaCy
+- pandas
+- rapidfuzz
+- Git
 
 ## Project Status
 
