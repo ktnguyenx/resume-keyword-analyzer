@@ -23,10 +23,6 @@ A Python and Streamlit application that analyzes resume-to-job-description align
 - rapidfuzz
 - Git
 
-## Project Status
-
-In active development.
-
 ## How It Works
 
 Given:
@@ -81,6 +77,12 @@ This project can help users:
 - Compare a resume against a target role
 - Identify missing technical skills or phrases
 - Improve resume targeting for specific job descriptions
+
+## Project Status
+
+In active development.
+
+Version history: [Notes and Logs](NOTES_AND_LOGS.md)
 
 ## Future Improvements
 
