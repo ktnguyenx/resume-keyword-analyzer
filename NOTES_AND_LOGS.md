@@ -54,7 +54,11 @@ Version history and development notes for the Resume Keyword Analyzer.
 ## Initial Project Setup - 2025-03-14
 - Created initial repository structure and baseline files.
 
-## Post-v4.2 Maintenance Log
+## Maintenance Log
 
 ### 2026-03-11
 - Updated README tech stack section.
+
+### 2026-03-12
+- Added Notes and Logs (this file)
+- Restructured README
